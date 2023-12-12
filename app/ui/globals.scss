@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-hex: theme('backgroundColor.neutral.50');
+  --foreground-hex: theme('textColor.black');
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-hex: theme('backgroundColor.neutral.900');
+    --foreground-hex: theme('textColor.white');
+  }
+}
+
+body {
+
+  // @apply selection:bg-teal-300 dark:selection:bg-pink-500 dark:selection:text-white;
+  color: var(--foreground-hex);
+  background-color: var(--background-hex);
+}
