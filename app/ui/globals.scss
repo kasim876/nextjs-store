@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .border-primary {
+    @apply border border-neutral-200 dark:border-neutral-700;
+  }
+}
+
 :root {
   --background-hex: theme('backgroundColor.neutral.50');
   --foreground-hex: theme('textColor.black');
@@ -15,8 +21,12 @@
 }
 
 body {
-
-  // @apply selection:bg-teal-300 dark:selection:bg-pink-500 dark:selection:text-white;
   color: var(--foreground-hex);
   background-color: var(--background-hex);
+}
+
+a,
+input,
+button {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-neutral-600 dark:focus-visible:ring-offset-neutral-900;
 }
