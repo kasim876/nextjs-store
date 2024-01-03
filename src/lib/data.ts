@@ -1,5 +1,6 @@
 import {sql} from '@vercel/postgres';
 import {Product} from './definitions';
+import {shuffle} from './utils';
 
 export async function fetchHomepageFeaturedProducts() {
   try {
@@ -16,7 +17,7 @@ export async function fetchCommonProducts() {
   try {
     const data = await sql<Product>`SELECT * FROM product WHERE tag = 'common'`;
 
-    return data.rows?.slice(0, 5);
+    return shuffle(data.rows).slice(0, 5);
   } catch (error) {
     console.log('Database error: ', error);
     throw new Error('Failed to fetch common products data');
