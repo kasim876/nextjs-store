@@ -11,6 +11,7 @@
 :root {
   --background-hex: theme('backgroundColor.neutral.50');
   --foreground-hex: theme('textColor.black');
+  --swiper-wrapper-transition-timing-function: linear;
 }
 
 @media (prefers-color-scheme: dark) {
