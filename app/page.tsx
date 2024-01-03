@@ -1,10 +1,12 @@
-import {fetchHomepageFeaturedProducts} from '@/src/lib/data';
+import Carousel from '@/src/components/carousel';
+import {fetchCommonProducts, fetchHomepageFeaturedProducts} from '@/src/lib/data';
 import GridItem from '@/src/components/grid-item';
 
 export default async function Home() {
   const featuredProducts = await fetchHomepageFeaturedProducts();
+  const commonProducts = await fetchCommonProducts();
 
-  if (!featuredProducts) return null;
+  if (!featuredProducts || !commonProducts) return null;
 
   const [firstProduct, secondProduct, thirdProduct] = featuredProducts;
 
@@ -24,6 +26,7 @@ export default async function Home() {
           size="half"
         />
       </section>
+      <Carousel products={commonProducts} />
     </main>
   );
 }
