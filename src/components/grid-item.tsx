@@ -15,7 +15,7 @@ export default function GridItem({item, size}: {item: Product; size: 'full' | 'h
             amount: item.amount,
             position: size === 'full' ? 'center' : 'bottom',
           }}
-          src={item.image_url}
+          src={item.image_url[0]}
           alt={item.title}
           fill
         />

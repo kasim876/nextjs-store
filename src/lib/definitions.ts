@@ -2,7 +2,8 @@ export type Product = {
   id?: number;
   title: string;
   amount: number;
-  image_url: string;
+  image_url: string[];
+  category: string;
   tag: 'homepage-featured-product' | 'common';
 };
 

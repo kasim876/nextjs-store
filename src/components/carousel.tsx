@@ -36,7 +36,7 @@ export default function Carousel({products}: {products: Product[]}) {
                 title: product.title,
               }}
               alt={product.title}
-              src={product.image_url}
+              src={product.image_url[0]}
               fill
             />
           </Link>
