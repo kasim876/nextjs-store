@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import '@/app/ui/globals.scss';
 import {inter} from '@/app/ui/fonts';
 import Header from '@/src/components/layout/header/header';
+import Footer from '@/src/components/layout/footer/footer';
 
 export const metadata: Metadata = {
   title: 'Nextjs Store',
@@ -15,6 +16,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body className={`${inter.className}`}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
