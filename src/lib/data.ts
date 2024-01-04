@@ -24,9 +24,9 @@ export async function fetchCommonProducts() {
   }
 }
 
-export async function fetchAllProducts() {
+export async function fetchAllProducts(query: string) {
   try {
-    const data = await sql<Product>`SELECT * FROM product`;
+    const data = await sql<Product>`SELECT * FROM product WHERE title ILIKE ${`%${query}%`}`;
 
     return data.rows;
   } catch (error) {

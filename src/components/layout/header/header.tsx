@@ -1,8 +1,8 @@
 import {ShoppingCartIcon} from '@heroicons/react/24/outline';
 import NavLinks from './nav-links';
-import Search from './search';
 import Link from 'next/link';
 import Logo from '../../logo';
+import Search from '../../search';
 
 export default function Header() {
   return (
@@ -21,7 +21,7 @@ export default function Header() {
           <NavLinks />
         </nav>
         <div className="flex justify-center md:w-1/3">
-          <Search />
+          <Search placeholder="Search for products..." />
         </div>
         <div className="flex justify-end md:w-1/3">
           <button className="flex items-center justify-center w-11 h-11 rounded-md border-primary">
