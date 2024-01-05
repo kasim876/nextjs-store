@@ -11,3 +11,15 @@ export type MenuLink = {
   name: string;
   href: string;
 };
+
+export type SortFilterItem = {
+  title: string;
+  slug: string | null;
+  sortKey: string;
+  reverse: boolean;
+};
+
+export type PathFilterItem = {
+  title: string;
+  href: string;
+};
