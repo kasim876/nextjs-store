@@ -5,7 +5,7 @@ import FilterItem from './filter-item';
 export default function FilterList({list, title}: {list: PathFilterItem[] | SortFilterItem[]; title?: string}) {
   return (
     <nav>
-      <h3>{title}</h3>
+      <h3 className="text-xs text-neutral-500 dark:text-neutral-400">{title}</h3>
       <ul>
         {list.map(item => (
           <FilterItem
