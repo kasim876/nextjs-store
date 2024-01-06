@@ -34,3 +34,14 @@ export async function fetchAllProducts(query: string) {
     throw new Error('Failed to fetch products data');
   }
 }
+
+export async function fetchCollectionProducts(collection: string) {
+  try {
+    const data = await sql<Product>`SELECT * FROM product WHERE category = ${collection}`;
+
+    return data.rows;
+  } catch (error) {
+    console.log('Database error: ', error);
+    throw new Error('Failed to fetch products data');
+  }
+}
