@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {Product} from '../lib/definitions';
-import ProductTile from './tile';
+import ProductTile from './tile/tile';
 
 export default function GridItem({item, size}: {item: Product; size: 'full' | 'half'}) {
   return (

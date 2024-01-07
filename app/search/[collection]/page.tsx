@@ -1,5 +1,5 @@
 import Grid from '@/src/components/grid';
-import ProductTile from '@/src/components/tile';
+import ProductTile from '@/src/components/tile/tile';
 import {fetchCollectionProducts} from '@/src/lib/data';
 import Link from 'next/link';
 import {usePathname, useParams} from 'next/navigation';
@@ -18,7 +18,7 @@ export default async function Page({params}: {params: {collection: string}}) {
               className="col-span-1"
               key={product.id}
             >
-              <Link href={`product/${product.id}`}>
+              <Link href={`/product/${product.id}`}>
                 <ProductTile
                   label={{
                     title: product.title,

@@ -1,6 +1,5 @@
 import Grid from '@/src/components/grid';
-import ProductTile from '@/src/components/tile';
-import {defaultSort, sortFilterLinks} from '@/src/lib/consts';
+import ProductTile from '@/src/components/tile/tile';
 import {fetchAllProducts} from '@/src/lib/data';
 import Link from 'next/link';
 
@@ -30,7 +29,7 @@ export default async function SearchPage({searchParams}: {searchParams?: {query?
               className="col-span-1"
               key={product.id}
             >
-              <Link href={`product/${product.id}`}>
+              <Link href={`/product/${product.id}`}>
                 <ProductTile
                   label={{
                     title: product.title,
