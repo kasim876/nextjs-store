@@ -6,7 +6,7 @@ import {Autoplay} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import Link from 'next/link';
-import ProductTile from './tile';
+import ProductTile from './tile/tile';
 import {Product} from '../lib/definitions';
 
 export default function Carousel({products}: {products: Product[]}) {
