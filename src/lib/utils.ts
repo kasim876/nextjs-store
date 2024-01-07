@@ -1,5 +1,15 @@
 import {ReadonlyURLSearchParams} from 'next/navigation';
 
+export function formatCurrency(amount: number) {
+  const formatedOption = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'narrowSymbol',
+  });
+
+  return formatedOption.format(amount);
+}
+
 export function shuffle(array: any[]) {
   let currentIndex = array.length,
     randomIndex;
