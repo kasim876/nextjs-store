@@ -45,3 +45,14 @@ export async function fetchCollectionProducts(collection: string) {
     throw new Error('Failed to fetch products data');
   }
 }
+
+export async function fetchProductById(id: string) {
+  try {
+    const data = await sql<Product>`SELECT * FROM product WHERE id = ${id}`;
+
+    return data.rows[0];
+  } catch (error) {
+    console.log('Database error: ', error);
+    throw new Error('Failed to fetch products data');
+  }
+}
