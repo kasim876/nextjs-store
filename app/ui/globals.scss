@@ -6,6 +6,10 @@
   .border-primary {
     @apply border border-neutral-200 dark:border-neutral-700;
   }
+
+  .border-b-primary {
+    @apply border-b border-neutral-200 dark:border-neutral-700;
+  }
 }
 
 :root {
