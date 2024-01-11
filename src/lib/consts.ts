@@ -3,7 +3,7 @@ import {PathFilterItem, SortFilterItem} from './definitions';
 export const defaultSort = {
   title: 'Relevance',
   slug: null,
-  sortKey: 'RELEVANCE',
+  sortKey: '',
   reverse: false,
 };
 
@@ -12,14 +12,14 @@ export const sortFilterLinks: SortFilterItem[] = [
   {
     title: 'Price: Low to high',
     slug: 'price-asc',
-    sortKey: 'PRICE',
-    reverse: true,
+    sortKey: 'amount',
+    reverse: false,
   },
   {
     title: 'Price: High to low',
     slug: 'price-desc',
-    sortKey: 'PRICE',
-    reverse: false,
+    sortKey: 'amount',
+    reverse: true,
   },
 ];
 
