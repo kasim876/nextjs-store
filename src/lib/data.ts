@@ -1,9 +1,21 @@
+import pg from 'pg';
 import {sql} from '@vercel/postgres';
 import {Product} from './definitions';
 import {shuffle} from './utils';
+import {unstable_noStore as noStore} from 'next/cache';
+
+const {Pool} = pg;
+
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL + '?sslmode=require',
+});
 
 export async function fetchHomepageFeaturedProducts() {
+  noStore();
+
   try {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     const data = await sql<Product>`SELECT * FROM product WHERE tag = 'homepage-featured-product'`;
 
     return data.rows;
@@ -14,7 +26,11 @@ export async function fetchHomepageFeaturedProducts() {
 }
 
 export async function fetchCommonProducts() {
+  noStore();
+
   try {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     const data = await sql<Product>`SELECT * FROM product WHERE tag = 'common'`;
 
     return shuffle(data.rows).slice(0, 5);
@@ -24,30 +40,79 @@ export async function fetchCommonProducts() {
   }
 }
 
-export async function fetchAllProducts(query: string) {
-  try {
-    const data = await sql<Product>`SELECT * FROM product WHERE title ILIKE ${`%${query}%`}`;
+export async function fetchProductsWithSearchAndSorting(searchQuery: string, columnName: string, reverseSort: boolean) {
+  noStore();
 
-    return data.rows;
+  const client = await pool.connect();
+
+  try {
+    // await new Promise(resolve => setTimeout(resolve, 5000));
+
+    let queryText = `SELECT * FROM product`;
+
+    if (searchQuery) {
+      queryText += ` WHERE title ILIKE '%${searchQuery}%'`;
+    }
+    if (columnName) {
+      queryText += ` ORDER BY ${columnName}`;
+
+      if (reverseSort) {
+        queryText += ` DESC`;
+      }
+    }
+
+    const result = await client.query(queryText);
+
+    return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
     throw new Error('Failed to fetch products data');
+  } finally {
+    client.release();
   }
 }
 
-export async function fetchCollectionProducts(collection: string) {
-  try {
-    const data = await sql<Product>`SELECT * FROM product WHERE category = ${collection}`;
+export async function fetchCollectionProductsWithSearchAndSorting(
+  collection: string,
+  columnName: string,
+  reverseSort: boolean,
+) {
+  noStore();
 
-    return data.rows;
+  const client = await pool.connect();
+
+  try {
+    // await new Promise(resolve => setTimeout(resolve, 5000));
+
+    let queryText = `SELECT * FROM product WHERE category = '${collection}'`;
+
+    if (columnName) {
+      queryText += ` ORDER BY ${columnName}`;
+
+      if (reverseSort) {
+        queryText += ` DESC`;
+      }
+    }
+
+    console.log(queryText);
+
+    const result = await client.query(queryText);
+
+    return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
     throw new Error('Failed to fetch products data');
+  } finally {
+    client.release();
   }
 }
 
 export async function fetchProductById(id: string) {
+  noStore();
+
   try {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     const data = await sql<Product>`SELECT * FROM product WHERE id = ${id}`;
 
     return data.rows[0];

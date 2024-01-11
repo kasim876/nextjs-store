@@ -1,15 +1,17 @@
 import Grid from '@/src/components/grid';
 import ProductTile from '@/src/components/tile/tile';
-import {fetchAllProducts} from '@/src/lib/data';
+import {defaultSort, sortFilterLinks} from '@/src/lib/consts';
+import {fetchProductsWithSearchAndSorting} from '@/src/lib/data';
 import Link from 'next/link';
 
 export default async function SearchPage({searchParams}: {searchParams?: {query?: string; sort?: string}}) {
   const query = searchParams?.query || '';
   const sort = searchParams?.sort || '';
-  /* TODO: do the pass sort params to fetch functions */
-  // const {sortKey, reverse} = sortFilterLinks.find(el => el.slug === sort) || defaultSort;
 
-  const products = await fetchAllProducts(query);
+  const {sortKey, reverse} = sortFilterLinks.find(el => el.slug === sort) || defaultSort;
+
+  const products = await fetchProductsWithSearchAndSorting(query, sortKey, reverse);
+
   const resultText = products.length > 1 ? 'results' : 'result';
 
   return (
