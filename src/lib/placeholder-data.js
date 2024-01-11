@@ -63,7 +63,7 @@ const products = [
     title: 'Acme Cap',
     amount: 20,
     image_url: ['/products/hat-1.png', '/products/hat-2.png', '/products/hat-3.png'],
-    category: 'headwear',
+    category: 'headware',
     tag: 'common',
   },
   {
@@ -90,7 +90,7 @@ const products = [
       '/products/cowboy-hat-tan-5.png',
       '/products/cowboy-hat-tan-6.png',
     ],
-    category: 'headwear',
+    category: 'headware',
     tag: 'common',
   },
   {
