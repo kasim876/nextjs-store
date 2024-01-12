@@ -1,7 +1,7 @@
 import Grid from '@/src/components/grid';
 import ProductTile from '@/src/components/tile/tile';
 import {defaultSort, sortFilterLinks} from '@/src/lib/consts';
-import {fetchCollectionProductsWithSearchAndSorting} from '@/src/lib/data';
+import {fetchCollectionProductsWithSorting} from '@/src/lib/data';
 import Link from 'next/link';
 import {usePathname, useParams} from 'next/navigation';
 
@@ -20,7 +20,7 @@ export default async function Page({
 
   const {sortKey, reverse} = sortFilterLinks.find(el => el.slug === sort) || defaultSort;
 
-  const products = await fetchCollectionProductsWithSearchAndSorting(params?.collection, sortKey, reverse);
+  const products = await fetchCollectionProductsWithSorting(params?.collection, sortKey, reverse);
 
   return (
     <main>
