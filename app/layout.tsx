@@ -1,7 +1,7 @@
 import React from 'react';
 import type {Metadata} from 'next';
-import '@/app/ui/globals.scss';
-import {inter} from '@/app/ui/fonts';
+import '@/app/globals.scss';
+import {inter} from '@/src/components/fonts';
 import Header from '@/src/components/layout/header/header';
 import Footer from '@/src/components/layout/footer/footer';
 
