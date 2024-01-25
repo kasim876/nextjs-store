@@ -157,7 +157,7 @@ const products = [
     title: 'Acme Dog Sweater',
     amount: 20,
     image_url: ['/products/dog-sweater-1.png', '/products/dog-sweater-2.png'],
-    category: 'kids',
+    category: 'pets',
     tag: 'common',
   },
 ];
