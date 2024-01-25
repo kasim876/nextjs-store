@@ -1,16 +1,13 @@
 import {Pool} from 'pg';
 import {sql} from '@vercel/postgres';
 import {Product} from './definitions';
-import {shuffle} from './utils';
-import {unstable_noStore as noStore} from 'next/cache';
+import {unstable_noStore as noStore, unstable_cache as cache} from 'next/cache';
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + '?sslmode=require',
 });
 
 export async function fetchHomepageFeaturedProducts() {
-  noStore();
-
   try {
     await new Promise(resolve => setTimeout(resolve, 5000));
 
@@ -24,27 +21,29 @@ export async function fetchHomepageFeaturedProducts() {
 }
 
 export async function fetchCommonProducts() {
-  noStore();
-
   try {
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     const result = await sql<Product>`SELECT * FROM product WHERE tag = 'common'`;
 
-    return shuffle(result.rows).slice(0, 5);
+    return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
     throw new Error('Failed to fetch common products data');
   }
 }
 
-export async function fetchProductsWithSearchAndSorting(searchQuery: string, columnName: string, reverseSort: boolean) {
+export async function fetchProductsWithSearchAndSorting(
+  searchQuery?: string,
+  columnName?: string,
+  reverseSort?: boolean,
+) {
   noStore();
 
   const client = await pool.connect();
 
   try {
-    // await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     let queryText = `SELECT * FROM product`;
 
@@ -59,7 +58,7 @@ export async function fetchProductsWithSearchAndSorting(searchQuery: string, col
       }
     }
 
-    const result = await client.query(queryText);
+    const result = await client.query<Product>(queryText);
 
     return result.rows;
   } catch (error) {
@@ -76,7 +75,7 @@ export async function fetchCollectionProductsWithSorting(collection: string, col
   const client = await pool.connect();
 
   try {
-    // await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     let queryText = `SELECT * FROM product WHERE category = '${collection}'`;
 
@@ -88,7 +87,7 @@ export async function fetchCollectionProductsWithSorting(collection: string, col
       }
     }
 
-    const result = await client.query(queryText);
+    const result = await client.query<Product>(queryText);
 
     return result.rows;
   } catch (error) {
@@ -100,10 +99,8 @@ export async function fetchCollectionProductsWithSorting(collection: string, col
 }
 
 export async function fetchProductById(id: string) {
-  noStore();
-
   try {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
 
     const result = await sql<Product>`SELECT * FROM product WHERE id = ${id}`;
 

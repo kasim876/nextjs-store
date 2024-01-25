@@ -2,6 +2,8 @@ import Carousel from '@/src/components/carousel';
 import {fetchCommonProducts, fetchHomepageFeaturedProducts} from '@/src/lib/data';
 import GridItem from '@/src/components/grid-item';
 
+export const dynamic = 'force-static';
+
 export default async function Home() {
   const featuredProducts = await fetchHomepageFeaturedProducts();
   const commonProducts = await fetchCommonProducts();

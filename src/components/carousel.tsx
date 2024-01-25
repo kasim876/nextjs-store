@@ -8,8 +8,11 @@ import 'swiper/css/autoplay';
 import Link from 'next/link';
 import ProductTile from './tile/tile';
 import {Product} from '../lib/definitions';
+import {shuffle} from '../lib/utils';
 
 export default function Carousel({products}: {products: Product[]}) {
+  products = shuffle(products).slice(0, 5);
+
   return (
     <Swiper
       className="!px-4 mb-4"

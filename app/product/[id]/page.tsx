@@ -1,7 +1,17 @@
 import ProductDescription from '@/src/components/product/descr';
 import Gallery from '@/src/components/product/gallery';
-import {fetchProductById} from '@/src/lib/data';
+import {fetchProductById, fetchProductsWithSearchAndSorting} from '@/src/lib/data';
 import {notFound} from 'next/navigation';
+
+export const generateStaticParams = async () => {
+  const products = await fetchProductsWithSearchAndSorting();
+
+  return products.map(product => ({
+    id: product.id,
+  }));
+};
+
+export const dynamic = 'force-static';
 
 export default async function Page({
   params,
