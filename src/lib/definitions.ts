@@ -23,3 +23,8 @@ export type PathFilterItem = {
   title: string;
   href: string;
 };
+
+export type ProductOption = {
+  name: string;
+  values: string[];
+};
