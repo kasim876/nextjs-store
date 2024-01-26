@@ -1,16 +1,16 @@
 import {ShoppingCartIcon} from '@heroicons/react/24/outline';
-import NavLinks from './nav-links';
 import Link from 'next/link';
-import Logo from '../../logo';
-import Search from '../../search';
+import Logo from '@/src/components/logo';
+import Search from '@/src/components/search';
+import MobileMenu from './mobile-menu';
+import NavLinks from './nav-links';
 
 export default function Header() {
   return (
     <header className="flex items-center p-4">
-      {/* TODO: do the burger menu */}
-      <div className="block md:hidden">меню</div>
+      <MobileMenu />
       <div className="flex items-center w-full">
-        <nav className="flex w-full md:w-1/3">
+        <nav className="flex w-full justify-center md:justify-start md:w-1/3">
           <Link
             href="/"
             className="flex items-center mr-2 md:mr-6"
@@ -20,7 +20,7 @@ export default function Header() {
           </Link>
           <NavLinks />
         </nav>
-        <div className="flex justify-center md:w-1/3">
+        <div className="hidden md:flex justify-center md:w-1/3">
           <Search placeholder="Search for products..." />
         </div>
         <div className="flex justify-end md:w-1/3">
