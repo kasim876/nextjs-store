@@ -1,6 +1,7 @@
 import Carousel from '@/src/components/carousel';
 import {fetchCommonProducts, fetchHomepageFeaturedProducts} from '@/src/lib/data';
 import GridItem from '@/src/components/grid-item';
+import {shuffle} from '@/src/lib/utils';
 
 export const dynamic = 'force-static';
 
@@ -28,7 +29,7 @@ export default async function Home() {
           size="half"
         />
       </section>
-      <Carousel products={commonProducts} />
+      <Carousel products={shuffle(commonProducts)} />
     </main>
   );
 }

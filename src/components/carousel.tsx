@@ -11,7 +11,7 @@ import {Product} from '../lib/definitions';
 import {shuffle} from '../lib/utils';
 
 export default function Carousel({products}: {products: Product[]}) {
-  products = shuffle(products).slice(0, 5);
+  products = products.slice(0, 5);
 
   return (
     <Swiper

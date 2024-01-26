@@ -28,6 +28,7 @@ export default function ProductTile({
       {props.src ? (
         <Image
           className="relative h-full w-full object-contain transition duration-300 ease-in-out group-hover:scale-105"
+          sizes={label?.position === 'center' ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'}
           {...props}
         />
       ) : null}
