@@ -24,6 +24,8 @@ export type PathFilterItem = {
   href: string;
 };
 
+export type FilterListItem = PathFilterItem | SortFilterItem;
+
 export type ProductOption = {
   name: string;
   values: string[];

@@ -1,12 +1,10 @@
 'use client';
 
-import {PathFilterItem, SortFilterItem} from '@/src/lib/definitions';
+import {FilterListItem, PathFilterItem, SortFilterItem} from '@/src/lib/definitions';
 import {createUrl} from '@/src/lib/utils';
 import clsx from 'clsx';
 import Link from 'next/link';
 import {usePathname, useSearchParams} from 'next/navigation';
-
-type FilterItem = PathFilterItem | SortFilterItem;
 
 function PathFilterItem({item}: {item: PathFilterItem}) {
   const pathname = usePathname();
@@ -54,6 +52,6 @@ function SortFilterItem({item}: {item: SortFilterItem}) {
   );
 }
 
-export default function FilterItem({item}: {item: FilterItem}) {
+export default function FilterItem({item}: {item: FilterListItem}) {
   return 'href' in item ? <PathFilterItem item={item} /> : <SortFilterItem item={item} />;
 }
