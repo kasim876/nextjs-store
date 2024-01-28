@@ -27,7 +27,7 @@ export default async function Page({
       {products.length === 0 ? (
         <p className="py-3 text-lg">There are no products in this collection</p>
       ) : (
-        <Grid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {products.map(product => (
             <Grid.Item
               className="col-span-1"
