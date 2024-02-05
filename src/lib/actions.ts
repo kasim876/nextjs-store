@@ -1,7 +1,6 @@
 'use server';
 
 import {cookies} from 'next/headers';
-import {Cart} from './definitions';
 import {updateCart} from './data';
 import {revalidatePath} from 'next/cache';
 import {v4} from 'uuid';
