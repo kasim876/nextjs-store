@@ -7,6 +7,13 @@ export type Product = {
   tag: 'homepage-featured-product' | 'common';
 };
 
+export type Cart = {
+  title: string;
+  amount: number;
+  image_url: string[];
+  quantity: number;
+};
+
 export type MenuLink = {
   name: string;
   href: string;

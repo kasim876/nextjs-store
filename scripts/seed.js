@@ -3,7 +3,7 @@ const {products} = require('../src/lib/placeholder-data.js');
 
 async function seedProducts(client) {
   try {
-    const createTable = await client.sql`
+    const createdTable = await client.sql`
       CREATE TABLE IF NOT EXISTS product (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -29,7 +29,7 @@ async function seedProducts(client) {
     console.log(`Seeded ${insertedProducts.length} products`);
 
     return {
-      createTable,
+      createdTable,
       products: insertedProducts,
     };
   } catch (error) {
@@ -38,10 +38,32 @@ async function seedProducts(client) {
   }
 }
 
+async function seedCart(client) {
+  try {
+    const createdTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS cart (
+        cart_id UUID NOT NULL,
+        product_id UUID NOT NULL,
+        quantity INTEGER NOT NULL
+      );
+    `;
+
+    console.log(`Created "cart" table`);
+
+    return {
+      createdTable,
+    };
+  } catch (error) {
+    console.error('Error seeding cart: ', error);
+    throw error;
+  }
+}
+
 async function main() {
   const client = await db.connect();
 
   await seedProducts(client);
+  await seedCart(client);
 
   await client.end();
 }
