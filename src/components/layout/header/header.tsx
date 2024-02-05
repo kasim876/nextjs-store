@@ -24,9 +24,12 @@ export default function Header() {
           <Search placeholder="Search for products..." />
         </div>
         <div className="flex justify-end md:w-1/3">
-          <button className="flex items-center justify-center w-11 h-11 rounded-md border-primary">
+          <Link
+            className="flex items-center justify-center w-11 h-11 rounded-md border-primary"
+            href="/cart"
+          >
             <ShoppingCartIcon className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>
