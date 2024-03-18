@@ -5,6 +5,7 @@ const products = [
     image_url: ['/products/cup-black.png', '/products/cup-white.png'],
     category: 'drinkware',
     tag: 'homepage-featured-product',
+    color: ['black', 'white'],
   },
   {
     title: 'Acme Mug',
@@ -19,6 +20,7 @@ const products = [
     image_url: ['/products/bag-black.png', '/products/bag-white.png'],
     category: 'bags',
     tag: 'homepage-featured-product',
+    color: ['black', 'white'],
   },
   {
     title: 'Acme Circles T-Shirt',
@@ -30,6 +32,8 @@ const products = [
     ],
     category: 'shirts',
     tag: 'homepage-featured-product',
+    size: ['s', 'm', 'l'],
+    color: ['black', 'white', 'blue'],
   },
   {
     title: 'Acme Keyboard',
@@ -58,6 +62,7 @@ const products = [
     image_url: ['/products/hoodie-1.png', '/products/hoodie-2.png'],
     category: 'hoodies',
     tag: 'common',
+    size: ['l', 'xl', 'xxl'],
   },
   {
     title: 'Acme Cap',
@@ -72,6 +77,7 @@ const products = [
     image_url: ['/products/baby-cap-black.png', '/products/baby-cap-gray.png', '/products/baby-cap-white.png'],
     category: 'kids',
     tag: 'common',
+    color: ['black', 'gray', 'white'],
   },
   {
     title: 'Acme Cowboy Hat',
@@ -92,6 +98,7 @@ const products = [
     ],
     category: 'headware',
     tag: 'common',
+    color: ['black', 'tan'],
   },
   {
     title: 'Acme T-Shirt',
@@ -105,6 +112,8 @@ const products = [
     ],
     category: 'shirts',
     tag: 'common',
+    size: ['xs', 's', 'm', 'l', 'xl'],
+    color: ['black', 'white', 'blue', 'gray', 'pink'],
   },
   {
     title: 'Acme Prism T-Shirt',
@@ -117,6 +126,7 @@ const products = [
     ],
     category: 'shirts',
     tag: 'common',
+    size: ['m', 'l', 'xl'],
   },
   {
     title: 'Acme Slip-On Shoes',
@@ -124,6 +134,7 @@ const products = [
     image_url: ['/products/shoes-1.png', '/products/shoes-2.png', '/products/shoes-3.png', '/products/shoes-4.png'],
     category: 'footware',
     tag: 'common',
+    size: ['38', '39', '40', '41', '42'],
   },
   {
     title: 'Acme Bomber Jacket',
@@ -131,6 +142,8 @@ const products = [
     image_url: ['/products/bomber-jacket-army.png', '/products/bomber-jacket-black.png'],
     category: 'jackets',
     tag: 'common',
+    size: ['s', 'm', 'l', 'xl', 'xxl'],
+    color: ['army', 'black'],
   },
   {
     title: 'Acme Pacifier',
@@ -152,6 +165,8 @@ const products = [
     ],
     category: 'kids',
     tag: 'common',
+    size: ['nb', '3m', '6m', '12m', '18m', '24m'],
+    color: ['white', 'black', 'beige'],
   },
   {
     title: 'Acme Dog Sweater',
@@ -159,6 +174,7 @@ const products = [
     image_url: ['/products/dog-sweater-1.png', '/products/dog-sweater-2.png'],
     category: 'pets',
     tag: 'common',
+    size: ['0 - 5 lbs', '5 - 20 lbs', '20 - 50 lbs', '50 - 75 lbs', '75+ lbs'],
   },
 ];
 

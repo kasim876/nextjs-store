@@ -16,8 +16,8 @@ export default function ProductDescription({product}: {product: Product}) {
         </div>
       </div>
 
-      <OptionsSelect option={{name: 'color', values: ['black', 'blue', 'gray', 'pink', 'white']}} />
-      <OptionsSelect option={{name: 'size', values: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']}} />
+      {!!product.color && <OptionsSelect option={{name: 'color', values: product.color}} />}
+      {!!product.size && <OptionsSelect option={{name: 'size', values: product.size}} />}
 
       <AddToCartForm />
     </>

@@ -5,6 +5,8 @@ export type Product = {
   image_url: string[];
   category: string;
   tag: 'homepage-featured-product' | 'common';
+  size?: string[];
+  color?: string[];
 };
 
 export type Cart = {
