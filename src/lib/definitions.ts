@@ -14,6 +14,8 @@ export type Cart = {
   amount: number;
   image_url: string[];
   quantity: number;
+  size: string;
+  color: string;
 };
 
 export type MenuLink = {

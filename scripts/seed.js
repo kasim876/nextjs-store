@@ -46,7 +46,9 @@ async function seedCart(client) {
       CREATE TABLE IF NOT EXISTS cart (
         cart_id UUID NOT NULL,
         product_id UUID NOT NULL,
-        quantity INTEGER NOT NULL
+        quantity INTEGER NOT NULL,
+        size VARCHAR(255) DEFAULT NULL,
+        color VARCHAR(255) DEFAULT NULL
       );
     `;
 
