@@ -7,24 +7,32 @@ const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + '?sslmode=require',
 });
 
-export async function updateCart(cartId: string, productId: string) {
+export async function updateCart(cartId: string, productId: string, size: string | null, color: string | null) {
   const client = await pool.connect();
 
   try {
-    const result = await client.query(`SELECT * FROM cart WHERE cart_id = $1 AND product_id = $2`, [cartId, productId]);
+    const result = await client.query(
+      `SELECT * FROM cart WHERE cart_id = $1 AND product_id = $2 AND size = $3 AND color = $4`,
+      [cartId, productId, size, color],
+    );
     const foundProduct = result.rows;
 
     if (foundProduct.length > 0) {
-      await client.query(`UPDATE cart SET quantity = quantity + 1 WHERE cart_id = $1 AND product_id = $2`, [
+      await client.query(
+        `UPDATE cart SET quantity = quantity + 1 WHERE cart_id = $1 AND product_id = $2 AND size = $3 AND color = $4`,
+        [cartId, productId, size, color],
+      );
+    } else {
+      await client.query(`INSERT INTO cart (cart_id, product_id, quantity, size, color) VALUES ($1, $2, 1, $3, $4)`, [
         cartId,
         productId,
+        size,
+        color,
       ]);
-    } else {
-      await client.query(`INSERT INTO cart (cart_id, product_id, quantity) VALUES ($1, $2, 1)`, [cartId, productId]);
     }
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to update product in cart');
+    throw new Error('Failed to get update basket');
   } finally {
     client.release();
   }
@@ -35,7 +43,7 @@ export async function getCart(cartId: string) {
 
   try {
     const result = await client.query<Cart>(
-      `SELECT product.title, product.amount, product.image_url, cart.quantity
+      `SELECT product.title, product.amount, product.image_url, cart.quantity, cart.size, cart.color
       FROM product
       INNER JOIN cart ON product.id = cart.product_id
       WHERE cart_id = $1`,
