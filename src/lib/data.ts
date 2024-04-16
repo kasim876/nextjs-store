@@ -7,32 +7,54 @@ const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + '?sslmode=require',
 });
 
-export async function updateCart(cartId: string, productId: string, size: string | null, color: string | null) {
+export async function addProductToCart(cartId: string, productId: string, size: string, color: string) {
   const client = await pool.connect();
 
   try {
-    const result = await client.query(
-      `SELECT * FROM cart WHERE cart_id = $1 AND product_id = $2 AND size = $3 AND color = $4`,
-      [cartId, productId, size, color],
-    );
-    const foundProduct = result.rows;
+    const checkProductExistsQuery = `
+      SELECT id FROM cart
+      WHERE cart_id = $1 AND product_id = $2 AND color = $3 AND size = $4
+    `;
 
-    if (foundProduct.length > 0) {
-      await client.query(
-        `UPDATE cart SET quantity = quantity + 1 WHERE cart_id = $1 AND product_id = $2 AND size = $3 AND color = $4`,
-        [cartId, productId, size, color],
-      );
+    const checkProductExistsResult = await client.query(checkProductExistsQuery, [cartId, productId, size, color]);
+
+    if (checkProductExistsResult.rowCount > 0) {
+      const updateQuantityQuery = `
+        UPDATE cart_items
+        SET quantity = quantity + 1
+        WHERE cart_id = $1 AND product_id = $2 AND color = $3 AND size = $4
+      `;
+
+      await client.query(updateQuantityQuery, [cartId, productId, size, color]);
     } else {
-      await client.query(`INSERT INTO cart (cart_id, product_id, quantity, size, color) VALUES ($1, $2, 1, $3, $4)`, [
-        cartId,
-        productId,
-        size,
-        color,
-      ]);
+      const insertProductQuery = `
+        INSERT INTO cart (cart_id, product_id, color, size, quantity)
+        VALUES ($1, $2, $3, $4, 1)
+      `;
+
+      await client.query(insertProductQuery, [cartId, productId, color, size]);
     }
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to get update basket');
+    throw new Error('Failed to add product to cart.');
+  } finally {
+    client.release();
+  }
+}
+
+export async function deleteProductFromCart(cartId: string, productId: string, size: string, color: string) {
+  const client = await pool.connect();
+
+  try {
+    const deleteProductQuery = `
+      DELETE FROM cart
+      WHERE cart_id = $1 AND product_id = $2 AND (size = $3 OR size IS NULL) AND (color = $4 OR color IS NULL)
+    `;
+
+    await client.query(deleteProductQuery, [cartId, productId, size, color]);
+  } catch (error) {
+    console.log('Database error: ', error);
+    throw new Error('Failed to delete product from cart.');
   } finally {
     client.release();
   }
@@ -42,46 +64,60 @@ export async function getCart(cartId: string) {
   const client = await pool.connect();
 
   try {
-    const result = await client.query<Cart>(
-      `SELECT product.title, product.amount, product.image_url, cart.quantity, cart.size, cart.color
-      FROM product
-      INNER JOIN cart ON product.id = cart.product_id
-      WHERE cart_id = $1`,
-      [cartId],
-    );
+    const getCartQuery = `
+      SELECT id, title, amount, image_url, cart.size, cart.color, quantity FROM product
+      JOIN cart ON product.id = cart.product_id
+      WHERE cart_id = $1
+    `;
+
+    const result = await client.query<Cart>(getCartQuery, [cartId]);
 
     return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to fetch featured cart data');
+    throw new Error('Failed to fetch cart data.');
   } finally {
     client.release();
   }
 }
 
-export async function fetchHomepageFeaturedProducts() {
-  try {
-    // await new Promise(resolve => setTimeout(resolve, 5000));
+export async function fetchHomepageProducts() {
+  const client = await pool.connect();
 
-    const result = await sql<Product>`SELECT * FROM product WHERE tag = 'homepage-featured-product'`;
+  try {
+    const fetchHomepageProductsQuery = `
+      SELECT * FROM product
+      WHERE tag = 'homepage-featured-product
+    `;
+
+    const result = await client.query<Product>(fetchHomepageProductsQuery);
 
     return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to fetch featured products data');
+    throw new Error('Failed to fetch featured products data.');
+  } finally {
+    client.release();
   }
 }
 
 export async function fetchCommonProducts() {
-  try {
-    // await new Promise(resolve => setTimeout(resolve, 5000));
+  const client = await pool.connect();
 
-    const result = await sql<Product>`SELECT * FROM product WHERE tag = 'common'`;
+  try {
+    const fetchCommonProductsQuery = `
+      SELECT * FROM product
+      WHERE tag = 'common'
+    `;
+
+    const result = await client.query<Product>(fetchCommonProductsQuery);
 
     return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to fetch common products data');
+    throw new Error('Failed to fetch common products data.');
+  } finally {
+    client.release();
   }
 }
 
@@ -95,27 +131,25 @@ export async function fetchProductsWithSearchAndSorting(
   const client = await pool.connect();
 
   try {
-    // await new Promise(resolve => setTimeout(resolve, 3000));
-
-    let queryText = `SELECT * FROM product`;
+    let fetchProductsQuery = `SELECT * FROM product`;
 
     if (searchQuery) {
-      queryText += ` WHERE title ILIKE '%${searchQuery}%'`;
+      fetchProductsQuery += ` WHERE title ILIKE '%${searchQuery}%'`;
     }
     if (columnName) {
-      queryText += ` ORDER BY ${columnName}`;
+      fetchProductsQuery += ` ORDER BY ${columnName}`;
 
       if (reverseSort) {
-        queryText += ` DESC`;
+        fetchProductsQuery += ` DESC`;
       }
     }
 
-    const result = await client.query<Product>(queryText);
+    const result = await client.query<Product>(fetchProductsQuery);
 
     return result.rows;
   } catch (error) {
     console.log('Database error: ', error);
-    throw new Error('Failed to fetch products data');
+    throw new Error('Failed to fetch products data.');
   } finally {
     client.release();
   }
@@ -127,19 +161,17 @@ export async function fetchCollectionProductsWithSorting(collection: string, col
   const client = await pool.connect();
 
   try {
-    // await new Promise(resolve => setTimeout(resolve, 3000));
-
-    let queryText = `SELECT * FROM product WHERE category = '${collection}'`;
+    let fetchCollectionQuery = `SELECT * FROM product WHERE category = '${collection}'`;
 
     if (columnName) {
-      queryText += ` ORDER BY ${columnName}`;
+      fetchCollectionQuery += ` ORDER BY ${columnName}`;
 
       if (reverseSort) {
-        queryText += ` DESC`;
+        fetchCollectionQuery += ` DESC`;
       }
     }
 
-    const result = await client.query<Product>(queryText);
+    const result = await client.query<Product>(fetchCollectionQuery);
 
     return result.rows;
   } catch (error) {
@@ -151,14 +183,21 @@ export async function fetchCollectionProductsWithSorting(collection: string, col
 }
 
 export async function fetchProductById(id: string) {
-  try {
-    // await new Promise(resolve => setTimeout(resolve, 6000));
+  const client = await pool.connect();
 
-    const result = await sql<Product>`SELECT * FROM product WHERE id = ${id}`;
+  try {
+    const fetchProductQuery = `
+      SELECT * FROM product
+      WHERE id = ${id}
+    `;
+
+    const result = await client.query<Product>(fetchProductQuery);
 
     return result.rows[0];
   } catch (error) {
     console.log('Database error: ', error);
     throw new Error('Failed to fetch products data');
+  } finally {
+    client.release();
   }
 }

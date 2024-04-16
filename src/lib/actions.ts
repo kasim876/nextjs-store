@@ -1,19 +1,21 @@
 'use server';
 
-import {cookies} from 'next/headers';
-import {updateCart} from './data';
+import {deleteProductFromCart, addProductToCart} from './data';
 import {revalidatePath} from 'next/cache';
-import {v4} from 'uuid';
+import {getCartId} from './utils';
 
-export async function addProduct(productId: string, size: string | null, color: string | null) {
-  let cartId = cookies().get('cartId')?.value;
+export async function addProduct(productId: string, size: string, color: string) {
+  const cartId = getCartId();
 
-  if (!cartId) {
-    cartId = v4();
-    cookies().set('cartId', cartId);
-  }
+  await addProductToCart(cartId, productId, size, color);
 
-  await updateCart(cartId, productId, size, color);
+  revalidatePath('/basket');
+}
+
+export async function deleteProduct(productId: string, size: string, color: string) {
+  const cartId = getCartId();
+
+  await deleteProductFromCart(cartId, productId, size, color);
 
   revalidatePath('/basket');
 }

@@ -1,4 +1,6 @@
+import {cookies} from 'next/headers';
 import {ReadonlyURLSearchParams} from 'next/navigation';
+import {v4} from 'uuid';
 
 export function formatCurrency(amount: number) {
   const formatedOption = new Intl.NumberFormat('en-US', {
@@ -29,4 +31,15 @@ export function createUrl(pathname: string, params: URLSearchParams | ReadonlyUR
   const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
 
   return `${pathname}${queryString}`;
+}
+
+export function getCartId() {
+  let cartId = cookies().get('cartId')?.value;
+
+  if (!cartId) {
+    cartId = v4();
+    cookies().set('cartId', cartId);
+  }
+
+  return cartId;
 }
